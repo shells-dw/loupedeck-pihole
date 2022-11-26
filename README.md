@@ -13,6 +13,8 @@
 It's a plugin for the [Loupedeck Live Consoles][Loupedeck] that uses the official Pi-Hole API to enable and disable the blocking as well as display a lot of statistics on the device.
 Disabling your ad blocking is just a touch away now ;)
 
+**Works on Windows and MacOS**
+
 _Note: I'm not affiliated with Pi-Hole, this plugin just uses the official API to control it from a Loupedeck._
 
 ## Release / Installation
