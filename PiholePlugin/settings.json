@@ -1,0 +1,4 @@
+{
+	"ApiUrl": "http://pi.hole/admin/api.php",
+	"ApiToken": ""
+}
