@@ -145,10 +145,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Ressources\piholeErr.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="docs\images\overview1.png" />
-    <Content Include="docs\images\overview2.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent Condition="$(OS) == 'Windows_NT'">call "$(ProjectDir)BuildEvents\postbuild.cmd" "$(ProjectDir)" "$(TargetDir)"</PostBuildEvent>

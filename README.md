@@ -6,7 +6,7 @@
 
 # Unofficial Loupedeck PiHole Plugin
 
-![Overview1](/docs/images/overview1.png)![Overview2](/docs/images/overview2.png)
+![Overview1](/PiholePlugin/docs/images/overview.png)
 
 ## What Is This (and what does it do?)
 
@@ -48,7 +48,7 @@ If you need to change the token, simply replace the value of "ApiToken" with the
 
 You have the following options:
 
-![Available Actions](/docs/images/actions.png)
+![Available Actions](/PiholePlugin/docs/images/actions.png)
 
 Which is basically everything the Pi-Hole API offers.
 
