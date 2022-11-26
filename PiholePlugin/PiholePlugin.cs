@@ -112,14 +112,9 @@ namespace Loupedeck.PiholePlugin
             {
                 return false;
             }
-            if (getSettings.Status == "enabled")
-            {
-                apiAccessGranted = Task.Run(() => apiClient.VerifyConnectivity("enable")).GetAwaiter().GetResult();
-            }
-            else
-            {
-                apiAccessGranted = Task.Run(() => apiClient.VerifyConnectivity("disable")).GetAwaiter().GetResult();
-            }
+            apiAccessGranted = getSettings.Status == "enabled"
+                ? Task.Run(() => apiClient.VerifyConnectivity("enable")).GetAwaiter().GetResult()
+                : Task.Run(() => apiClient.VerifyConnectivity("disable")).GetAwaiter().GetResult();
             return apiAccessGranted == true;
         }
 
@@ -146,15 +141,6 @@ namespace Loupedeck.PiholePlugin
             }
             return;
         }
-
-        private String GetSettingsPath()
-        {
-            return this.SystemIsMac()
-                ? $"file:///Users/{Environment.UserName}/.local/share/"
-                : $"file:/C:/Users/{Environment.UserName}/AppData/Local/";
-        }
-
-        public Boolean SystemIsMac() => Environment.OSVersion.Platform == PlatformID.Unix;
 
         private void FetchSettings()
         {

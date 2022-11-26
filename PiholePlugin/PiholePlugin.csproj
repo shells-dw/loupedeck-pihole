@@ -107,11 +107,9 @@
     <Compile Include="Actions\Enable.cs" />
     <Compile Include="Actions\Disable.cs" />
     <Compile Include="Helpers\Globals.cs" />
-    <Compile Include="Helpers\HelperFunctions.cs" />
     <Compile Include="IPiApiClient.cs" />
     <Compile Include="Models\PiStatus.cs" />
     <Compile Include="Models\Summary.cs" />
-    <Compile Include="Models\TopItems.cs" />
     <Compile Include="PiApiClient.cs" />
     <Compile Include="PiholePlugin.Installer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

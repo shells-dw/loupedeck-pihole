@@ -3,11 +3,7 @@
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
-
-    using global::PiHoleApiClient.Models;
-
     using Loupedeck.PiholePlugin.Models;
-
     using Newtonsoft.Json;
 
     public class PiHoleApiClient : IPiHoleApiClient
