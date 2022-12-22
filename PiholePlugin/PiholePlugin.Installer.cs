@@ -3,7 +3,6 @@
     using System;
     using System.IO;
     using System.Reflection;
-    using Newtonsoft.Json;
 
     public class PiholePluginInstaller
     {
@@ -23,8 +22,11 @@
             {
                 return true;
             }
-            ResourceReader.CreateFileFromResource("Loupedeck.PiholePlugin.settings.json", filePath);
-            return true;
+            else
+            {
+                ResourceReader.CreateFileFromResource("Loupedeck.PiholePlugin.settings.json", filePath);
+                return true;
+            }
         }
     }
     public class ResourceReader

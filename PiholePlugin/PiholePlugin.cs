@@ -20,6 +20,7 @@ namespace Loupedeck.PiholePlugin
         private readonly Thread _queryThread;
         private String apiUrl;
         private String ApiToken;
+        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         // Gets a value indicating whether this is an Universal plugin or an Application plugin.
         public override Boolean UsesApplicationApiOnly => true;
@@ -29,23 +30,23 @@ namespace Loupedeck.PiholePlugin
 
         //background updater
         public PiholePlugin() => this._queryThread = new Thread(this.QueryThread) { IsBackground = true };
-        private void QueryThread()
+        private async void QueryThread()
         {
             var httpClient = new HttpClient();
             var apiClient = new PiHoleApiClient(httpClient, this.apiUrl, this.ApiToken);
 
-            while (true)
+            while (true && !this._cancellationTokenSource.IsCancellationRequested)
             {
                 try
                 {
-                    Globals.PiDump = Task.Run(() => apiClient.GetSummaryRawAsync()).GetAwaiter().GetResult();
+                    Globals.PiDump = await apiClient.GetSummaryRawAsync();
                     UpdatedStatus?.Invoke(this, Globals.PiDump);
                 }
                 catch
                 {
                     //
                 }
-                System.Threading.Thread.Sleep(1000);
+                await Task.Delay(1000);
             }
         }
         // This method is called when the plugin is loaded during the Loupedeck service start-up.
@@ -81,9 +82,7 @@ namespace Loupedeck.PiholePlugin
         }
 
         // This method is called when the plugin is unloaded during the Loupedeck service shutdown.
-        public override void Unload()
-        {
-        }
+        public override void Unload() => this._cancellationTokenSource.Cancel();
 
         private Boolean VerifyConnectivity()
         {
@@ -91,7 +90,7 @@ namespace Loupedeck.PiholePlugin
             {
                 try
                 {
-                    return tcpClient.ConnectAsync(Regex.Match(this.apiUrl, @"^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)", RegexOptions.Singleline).Groups[1].Value, 80).Wait(1000);
+                    return tcpClient.ConnectAsync(Regex.Match(this.apiUrl, @"^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)", RegexOptions.Singleline).Groups[1].Value, 80).Wait(5000);
                 }
                 catch (Exception)
                 {
@@ -106,15 +105,15 @@ namespace Loupedeck.PiholePlugin
             var apiClient = new PiHoleApiClient(httpClient, this.apiUrl, this.ApiToken);
 
             // get status
-            var getSettings = Task.Run(() => apiClient.GetSummaryRawAsync()).GetAwaiter().GetResult();
+            var getSettings = Task.Run(() => apiClient.GetSummaryRawAsync()).Result;
             Boolean apiAccessGranted;
             if (getSettings.Status == null)
             {
                 return false;
             }
             apiAccessGranted = getSettings.Status == "enabled"
-                ? Task.Run(() => apiClient.VerifyConnectivity("enable")).GetAwaiter().GetResult()
-                : Task.Run(() => apiClient.VerifyConnectivity("disable")).GetAwaiter().GetResult();
+                ? Task.Run(() => apiClient.VerifyConnectivity("enable")).Result
+                : Task.Run(() => apiClient.VerifyConnectivity("disable")).Result;
             return apiAccessGranted == true;
         }
 

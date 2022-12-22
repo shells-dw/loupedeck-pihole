@@ -79,11 +79,19 @@ If you'd like to drop me a coffee for the hours I've spent on this:
 [![Tip](https://img.shields.io/badge/Donate-PayPal-green.svg)]( https://www.paypal.com/donate?hosted_button_id=8KXD334CCEEC2)
 or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y4CE9LH)
 
-
 # Changelog
+## [1.1.0] - 2022-12-22
+### Improved
+- process flow
+
+<details><summary>Changelog History</summary><p>
+
+
 ## [1.0.0] - 2022-11-26
 ### Added
 Initial release
+
+</p></details>
 
 
 <!-- Reference Links -->
@@ -91,5 +99,5 @@ Initial release
 [Loupedeck]: https://loupedeck.com "Loupedeck.com"
 [Releases]: https://github.com/shells-dw/loupedeck-pihole/releases "Releases"
 [PiHole]: https://pi-hole.net "Pi-hole® Network-wide Ad Blocking ﻿"
-[GitHub issues]: https://github.com/shells-dw/streamdeck-pihole/issues "GitHub issues link"
+[GitHub issues]: https://github.com/shells-dw/loupedeck-pihole/issues "GitHub issues link"
 

@@ -1,12 +1,9 @@
 ﻿namespace Loupedeck.PiholePlugin.Actions
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Http;
-    using System.Runtime;
-    using System.Text;
     using System.Threading.Tasks;
+
     using Loupedeck.PiholePlugin.Helpers;
 
     internal class Enable : PluginDynamicCommand
