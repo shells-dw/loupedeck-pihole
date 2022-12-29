@@ -9,10 +9,11 @@
         public static Boolean Install()
         {
             // Here we ensure the plugin data directory is there.
-            var helperFunction = new PiholePlugin();
-            var pluginDataDirectory = helperFunction.GetPluginDataDirectory();
+            var _this = new PiholePlugin();
+            var pluginDataDirectory = _this.GetPluginDataDirectory();
             if (!IoHelpers.EnsureDirectoryExists(pluginDataDirectory))
             {
+                _this.Log.Info($"{DateTime.Now} - Installer: pluginDataDirectory doesn't exist");
                 return false;
             }
 
@@ -20,11 +21,13 @@
             var filePath = System.IO.Path.Combine(pluginDataDirectory, System.IO.Path.Combine(pluginDataDirectory, "settings.json"));
             if (File.Exists(filePath))
             {
+                _this.Log.Info($"{DateTime.Now} - Installer: File exists");
                 return true;
             }
             else
             {
                 ResourceReader.CreateFileFromResource("Loupedeck.PiholePlugin.settings.json", filePath);
+                _this.Log.Info($"{DateTime.Now} - Installer: config file does not yet exist, creating default file");
                 return true;
             }
         }

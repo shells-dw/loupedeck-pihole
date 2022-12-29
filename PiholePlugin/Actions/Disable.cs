@@ -46,7 +46,8 @@
             this._plugin.TryGetPluginSetting("ApiToken", out var ApiToken);
             var httpClient = new HttpClient();
             var apiClient = new PiHoleApiClient(httpClient, apiUrl, ApiToken);
-            var data = Task.Run(() => apiClient.Disable(Int32.Parse(actionParameter))).GetAwaiter().GetResult();
+            Task.Run(() => apiClient.Disable(Int32.Parse(actionParameter))).Wait();
+            this.Log.Info($"{DateTime.Now} - Disabled PiHole {actionParameter}");
             // notify Loupedeck about the change
             this.ActionImageChanged(actionParameter);
         }

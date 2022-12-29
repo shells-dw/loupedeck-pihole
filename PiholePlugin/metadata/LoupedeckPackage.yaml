@@ -15,7 +15,7 @@ displayName: PiHole
 pluginFileName: PiholePlugin.dll
 
 # Plugin version.
-version: 1.1
+version: 1.2.0
 
 # Author of the plugin. The author can be a company or an individual developer.
 author: Dominik Werland

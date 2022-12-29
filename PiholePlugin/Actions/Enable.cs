@@ -33,7 +33,8 @@
             this._plugin.TryGetPluginSetting("ApiToken", out var ApiToken);
             var httpClient = new HttpClient();
             var apiClient = new PiHoleApiClient(httpClient, apiUrl, ApiToken);
-            var data = Task.Run(() => apiClient.Enable()).GetAwaiter().GetResult();
+            Task.Run(() => apiClient.Enable()).Wait();
+            this.Log.Info($"{DateTime.Now} - Enabled PiHole");
             // notify Loupedeck about the change
             this.ActionImageChanged(actionParameter);
         }

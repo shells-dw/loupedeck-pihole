@@ -4,6 +4,7 @@ namespace Loupedeck.PiholePlugin
     using System.IO;
     using System.Net.Http;
     using System.Net.Sockets;
+    using System.Runtime;
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
@@ -34,6 +35,8 @@ namespace Loupedeck.PiholePlugin
         {
             var httpClient = new HttpClient();
             var apiClient = new PiHoleApiClient(httpClient, this.apiUrl, this.ApiToken);
+            var _this = new PiholePlugin();
+            _this.Log.Info($"{DateTime.Now} - Starting query thread");
 
             while (true && !this._cancellationTokenSource.IsCancellationRequested)
             {
@@ -42,9 +45,9 @@ namespace Loupedeck.PiholePlugin
                     Globals.PiDump = await apiClient.GetSummaryRawAsync();
                     UpdatedStatus?.Invoke(this, Globals.PiDump);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    //
+                    _this.Log.Error($"{DateTime.Now} - QueryThread: Exception caught {ex.Message}");
                 }
                 await Task.Delay(1000);
             }
@@ -64,16 +67,21 @@ namespace Loupedeck.PiholePlugin
             // verify pihole is reachable under given url and the token is correct, set plugin status accordingly to display help if need be
 
             if (!this.VerifyConnectivity())
-            { this.OnPluginStatusChanged(Loupedeck.PluginStatus.Error, "Can't connect to PiHole! Verify and set URL in settings.json accordingly.", "https://github.com/shells-dw/loupedeck-pihole#settings.json", "GitHub Readme"); }
+            { 
+                this.OnPluginStatusChanged(Loupedeck.PluginStatus.Error, "Can't connect to PiHole! Verify and set URL in settings.json accordingly.", "https://github.com/shells-dw/loupedeck-pihole#settings.json", "GitHub Readme");
+                this.Log.Error($"{DateTime.Now} - Starting... !this.VerifyConnectivity()");
+            }
             else
             {
                 if (!this.VerifyToken())
                 {
                     this.OnPluginStatusChanged(Loupedeck.PluginStatus.Error, "It appears the API token isn't set correctly. Verify and set ApiToken in settings.json accordingly.", "https://github.com/shells-dw/loupedeck-pihole#settings.json", "GitHub Readme");
+                    this.Log.Error($"{DateTime.Now} - Starting... !this.VerifyToken()");
                 }
                 else
                 {
                     this.OnPluginStatusChanged(Loupedeck.PluginStatus.Normal, "Connected", null, null);
+                    this.Log.Info($"{DateTime.Now} - Starting... plugin in nominal status");
                 }
             }
 
@@ -92,8 +100,9 @@ namespace Loupedeck.PiholePlugin
                 {
                     return tcpClient.ConnectAsync(Regex.Match(this.apiUrl, @"^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)", RegexOptions.Singleline).Groups[1].Value, 80).Wait(5000);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.Log.Error($"{DateTime.Now} - VerifyConnectivity: Exception {ex.Message}");
                     return false;
                 }
             }
@@ -109,6 +118,7 @@ namespace Loupedeck.PiholePlugin
             Boolean apiAccessGranted;
             if (getSettings.Status == null)
             {
+                this.Log.Error($"{DateTime.Now} - VerifyToken: getSettings.Status == null");
                 return false;
             }
             apiAccessGranted = getSettings.Status == "enabled"
@@ -119,6 +129,7 @@ namespace Loupedeck.PiholePlugin
 
         public void UpdateConnectionSettings()
         {
+            this.Log.Info($"{DateTime.Now} - UpdateConnectionSettings()");
             this.TryGetSetting("ApiUrl", out var apiUrl);
             this.TryGetSetting("ApiToken", out var apiToken);
             var pluginDataDirectory = this.GetPluginDataDirectory();

@@ -80,13 +80,15 @@ If you'd like to drop me a coffee for the hours I've spent on this:
 or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y4CE9LH)
 
 # Changelog
-## [1.1.0] - 2022-12-22
-### Improved
-- process flow
+## [1.2.0] - 2022-12-29
+### Added
+- Logging
 
 <details><summary>Changelog History</summary><p>
 
-
+## [1.1.0] - 2022-12-22
+### Improved
+- process flow
 ## [1.0.0] - 2022-11-26
 ### Added
 Initial release
