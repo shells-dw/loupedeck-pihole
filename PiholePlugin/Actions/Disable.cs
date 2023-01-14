@@ -71,7 +71,7 @@
                 }
             }
 
-            var currentState = Globals.PiDump.Status == "enabled";
+            var currentState = Globals.PiDump.status == "enabled";
             var disabled = actionParameter != "0" ? $"Disable for\n{actionParameter}s" : $"Disable\nindefinitely";
 
             using (var bitmapBuilder = new BitmapBuilder(imageSize))

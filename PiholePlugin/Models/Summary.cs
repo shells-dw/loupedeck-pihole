@@ -1,84 +1,60 @@
 ﻿namespace Loupedeck.PiholePlugin.Models
 {
     using System;
-    using Newtonsoft.Json;
 
     public class Summary
     {
-        [JsonProperty("domains_being_blocked")]
-        public String DomainsBeingBlocked { get; set; }
+        public String domains_being_blocked { get; set; }
 
-        [JsonProperty("dns_queries_today")]
-        public String DnsQueriesToday { get; set; }
+        public String dns_queries_today { get; set; }
 
-        [JsonProperty("ads_blocked_today")]
-        public String AdsBlockedToday { get; set; }
+        public String ads_blocked_today { get; set; }
 
-        [JsonProperty("ads_percentage_today")]
-        public String AdsPercentageToday { get; set; }
+        public String ads_percentage_today { get; set; }
 
-        [JsonProperty("unique_domains")]
-        public String UniqueDomains { get; set; }
+        public String unique_domains { get; set; }
 
-        [JsonProperty("queries_forwarded")]
-        public String QueriesForwarded { get; set; }
+        public String queries_forwarded { get; set; }
 
-        [JsonProperty("queries_cached")]
-        public String QueriesCached { get; set; }
+        public String queries_cached { get; set; }
 
-        [JsonProperty("clients_ever_seen")]
-        public String ClientsEverSeen { get; set; }
+        public String clients_ever_seen { get; set; }
 
-        [JsonProperty("unique_clients")]
-        public String UniqueClients { get; set; }
+        public String unique_clients { get; set; }
 
-        [JsonProperty("dns_queries_all_types")]
-        public String DnsQueriesAllTypes { get; set; }
+        public String dns_queries_all_types { get; set; }
 
-        [JsonProperty("reply_NODATA")]
-        public String ReplyNoData { get; set; }
+        public String reply_nodata { get; set; }
 
-        [JsonProperty("reply_NXDOMAIN")]
-        public String ReplyNxDomain { get; set; }
+        public String reply_nxdomain { get; set; }
 
-        [JsonProperty("reply_CNAME")]
-        public String ReplyCname { get; set; }
+        public String reply_cname { get; set; }
 
-        [JsonProperty("reply_IP")]
-        public String ReplyIp { get; set; }
+        public String reply_ip { get; set; }
 
-        [JsonProperty("privacy_level")]
-        public String PrivacyLevel { get; set; }
+        public String privacy_level { get; set; }
 
-        [JsonProperty("status")]
-        public String Status { get; set; }
-
-        [JsonProperty("gravity_last_updated")]
-        public GravityLastUpdated GravityLastUpdated { get; set; }
+        public String status { get; set; }
+  
+        public GravityLastUpdated gravity_last_updated { get; set; }
 
 
     }
     public class Relative
     {
-        [JsonProperty("days")]
-        public Int32 Days { get; set; }
+        public Int32 days { get; set; }
 
-        [JsonProperty("hours")]
-        public Int32 Hours { get; set; }
+        public Int32 hours { get; set; }
 
-        [JsonProperty("minutes")]
-        public Int32 Minutes { get; set; }
+        public Int32 minutes { get; set; }
     }
 
     public class GravityLastUpdated
     {
-        [JsonProperty("file_exists")]
-        public Boolean FileExists { get; set; }
+        public Boolean file_exists { get; set; }
 
-        [JsonProperty("absolute")]
-        public String Absolute { get; set; }
+        public String absolute { get; set; }
 
-        [JsonProperty("relative")]
-        public Relative Relative { get; set; }
+        public Relative relative { get; set; }
     }
 }

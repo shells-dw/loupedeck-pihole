@@ -3,8 +3,8 @@
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
+
     using Loupedeck.PiholePlugin.Models;
-    using Newtonsoft.Json;
 
     public class PiHoleApiClient : IPiHoleApiClient
     {
@@ -43,7 +43,7 @@
             {
                 var s = seconds > 0 ? $"disable={seconds}" : "disable";
                 var resultString = await this.GetResultAsString($"{this._baseUrl}?{s}&auth={this._token}");
-                return JsonConvert.DeserializeObject<PiStatus>(resultString);
+                return JsonHelpers.DeserializeObject<PiStatus>(resultString);
             }
             catch
             {
@@ -53,7 +53,7 @@
 
         public async Task<PiStatus> Enable()
         {
-            return JsonConvert.DeserializeObject<PiStatus>
+            return JsonHelpers.DeserializeObject<PiStatus>
                 (await this.GetResultAsString($"{this._baseUrl}?enable&auth={this._token}"));
         }
 
@@ -64,7 +64,7 @@
             {
                 return new Summary();
             }
-            return JsonConvert.DeserializeObject<Summary>(resultString);
+            return JsonHelpers.DeserializeObject<Summary>(resultString);
         }
     }
 }

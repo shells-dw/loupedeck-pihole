@@ -15,7 +15,9 @@
         {
             this._plugin = base.Plugin as PiholePlugin;
             if (this._plugin is null)
+            {
                 return false;
+            }
 
             this._plugin.UpdatedStatus += (sender, e) => this.ActionImageChanged("");
             return base.OnLoad();
@@ -42,7 +44,7 @@
                     return bitmapBuilder.ToImage();
                 }
             }
-            var currentState = Globals.PiDump.Status == "enabled";
+            var currentState = Globals.PiDump.status == "enabled";
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
                 bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.Black);
@@ -50,7 +52,7 @@
                 bitmapBuilder.SetBackgroundImage(currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("piholeOn.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("piholeOff.png")));
                 bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.Transparent);
                 bitmapBuilder.FillRectangle(0, 0, 80, 80, color: new BitmapColor(0, 0, 0, 140));
-                bitmapBuilder.DrawText($"{Globals.PiDump.GravityLastUpdated.Relative.Days}d {Globals.PiDump.GravityLastUpdated.Relative.Hours}h {Globals.PiDump.GravityLastUpdated.Relative.Minutes}m", x: 0, y: 5, width: 80, height: 40, fontSize: 15, color: BitmapColor.White);
+                bitmapBuilder.DrawText($"{Globals.PiDump.gravity_last_updated.relative.days}d {Globals.PiDump.gravity_last_updated.relative.hours}h {Globals.PiDump.gravity_last_updated.relative.minutes}m", x: 0, y: 5, width: 80, height: 40, fontSize: 15, color: BitmapColor.White);
                 bitmapBuilder.DrawText("Gravity last\nupdated", x: 5, y: 35, width: 70, height: 40, fontSize: 12, color: BitmapColor.White);
 
                 return bitmapBuilder.ToImage();

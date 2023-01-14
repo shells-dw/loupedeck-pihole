@@ -58,7 +58,7 @@
                     return bitmapBuilder.ToImage();
                 }
             }
-            currentState = Globals.PiDump.Status == "enabled";
+            currentState = Globals.PiDump.status == "enabled";
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
                 bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.Black);

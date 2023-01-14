@@ -4,7 +4,6 @@ namespace Loupedeck.PiholePlugin
     using System.IO;
     using System.Net.Http;
     using System.Net.Sockets;
-    using System.Runtime;
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
@@ -116,12 +115,12 @@ namespace Loupedeck.PiholePlugin
             // get status
             var getSettings = Task.Run(() => apiClient.GetSummaryRawAsync()).Result;
             Boolean apiAccessGranted;
-            if (getSettings.Status == null)
+            if (getSettings.status == null)
             {
                 this.Log.Error($"{DateTime.Now} - VerifyToken: getSettings.Status == null");
                 return false;
             }
-            apiAccessGranted = getSettings.Status == "enabled"
+            apiAccessGranted = getSettings.status == "enabled"
                 ? Task.Run(() => apiClient.VerifyConnectivity("enable")).Result
                 : Task.Run(() => apiClient.VerifyConnectivity("disable")).Result;
             return apiAccessGranted == true;
@@ -134,7 +133,7 @@ namespace Loupedeck.PiholePlugin
             this.TryGetSetting("ApiToken", out var apiToken);
             var pluginDataDirectory = this.GetPluginDataDirectory();
             var json = File.ReadAllText(Path.Combine(pluginDataDirectory, "settings.json"));
-            var configFileSettings = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json);
+            var configFileSettings = JsonHelpers.DeserializeObject<dynamic>(json);
             if (configFileSettings["ApiUrl"].Value != null && configFileSettings["ApiUrl"].Value != apiUrl)
             {
                 this.SetPluginSetting("ApiUrl", configFileSettings["ApiUrl"].Value);
@@ -146,7 +145,7 @@ namespace Loupedeck.PiholePlugin
             if (configFileSettings["ApiToken"].Value == apiToken)
             {
                 configFileSettings["ApiToken"] = "[securely stored in plugin settings - replace with new token if neccessary]";
-                String output = Newtonsoft.Json.JsonConvert.SerializeObject(configFileSettings, Newtonsoft.Json.Formatting.Indented);
+                String output = JsonHelpers.SerializeObject(configFileSettings);
                 File.WriteAllText(Path.Combine(pluginDataDirectory, "settings.json"), output);
             }
             return;

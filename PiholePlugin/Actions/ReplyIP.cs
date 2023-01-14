@@ -15,7 +15,9 @@
         {
             this._plugin = base.Plugin as PiholePlugin;
             if (this._plugin is null)
+            {
                 return false;
+            }
 
             this._plugin.UpdatedStatus += (sender, e) => this.ActionImageChanged("");
             return base.OnLoad();
@@ -42,7 +44,7 @@
                     return bitmapBuilder.ToImage();
                 }
             }
-            var currentState = Globals.PiDump.Status == "enabled";
+            var currentState = Globals.PiDump.status == "enabled";
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
                 bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.Black);
@@ -50,7 +52,7 @@
                 bitmapBuilder.SetBackgroundImage(currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("piholeOn.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("piholeOff.png")));
                 bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.Transparent);
                 bitmapBuilder.FillRectangle(0, 0, 80, 80, color: new BitmapColor(0, 0, 0, 140));
-                bitmapBuilder.DrawText(String.Format("{0:n0}", Int32.Parse(Globals.PiDump.ReplyIp)), x: 40, y: 5, width: 0, height: 40, fontSize: 15, color: BitmapColor.White);
+                bitmapBuilder.DrawText(String.Format("{0:n0}", Int32.Parse(Globals.PiDump.reply_ip)), x: 40, y: 5, width: 0, height: 40, fontSize: 15, color: BitmapColor.White);
                 bitmapBuilder.DrawText("IP\nreply", x: 5, y: 35, width: 70, height: 40, fontSize: 12, color: BitmapColor.White);
 
                 return bitmapBuilder.ToImage();
