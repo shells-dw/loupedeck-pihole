@@ -59,7 +59,7 @@
 
         public async Task<Summary> GetSummaryRawAsync()
         {
-            var resultString = await this.GetResultAsString($"{this._baseUrl}?summaryRaw");
+            var resultString = await this.GetResultAsString($"{this._baseUrl}?summaryRaw&auth={this._token}");
             if (resultString == null )
             {
                 return new Summary();

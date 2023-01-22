@@ -81,11 +81,11 @@ namespace Loupedeck.PiholePlugin
                 {
                     this.OnPluginStatusChanged(Loupedeck.PluginStatus.Normal, "Connected", null, null);
                     this.Log.Info($"{DateTime.Now} - Starting... plugin in nominal status");
+
+                    // start background updater
+                    this._queryThread.Start();
                 }
             }
-
-            // start background updater
-            this._queryThread.Start();
         }
 
         // This method is called when the plugin is unloaded during the Loupedeck service shutdown.
@@ -111,9 +111,16 @@ namespace Loupedeck.PiholePlugin
             var httpClient = new HttpClient();
             httpClient.Timeout = TimeSpan.FromSeconds(2);
             var apiClient = new PiHoleApiClient(httpClient, this.apiUrl, this.ApiToken);
-
-            // get status
-            var getSettings = Task.Run(() => apiClient.GetSummaryRawAsync()).Result;
+            Summary getSettings = null;
+            try
+            {
+                getSettings = Task.Run(() => apiClient.GetSummaryRawAsync()).Result;
+            }
+            catch (Exception ex)
+            {
+                this.Log.Error($"{DateTime.Now} - VerifyToken: GetSummaryRawAsync(), Exception: {ex.Message}");
+                return false;
+            }
             Boolean apiAccessGranted;
             if (getSettings.status == null)
             {
@@ -137,10 +144,12 @@ namespace Loupedeck.PiholePlugin
             if (configFileSettings["ApiUrl"].Value != null && configFileSettings["ApiUrl"].Value != apiUrl)
             {
                 this.SetPluginSetting("ApiUrl", configFileSettings["ApiUrl"].Value);
+                this.Log.Info($"{DateTime.Now} - set settings. ApiUrl: {configFileSettings["ApiUrl"].Value}");
             }
             if (configFileSettings["ApiToken"] != null && configFileSettings["ApiToken"].Value != apiToken && configFileSettings["ApiToken"].Value != "[securely stored in plugin settings - replace with new token if neccessary]")
             {
                 this.SetPluginSetting("ApiToken", configFileSettings["ApiToken"].Value);
+                this.Log.Info($"{DateTime.Now} - set settings. ApiToken: (not logged but set)");
             }
             if (configFileSettings["ApiToken"].Value == apiToken)
             {
